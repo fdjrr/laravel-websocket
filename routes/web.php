@@ -1,5 +1,7 @@
 <?php
 
+use App\Events\HelloEvent;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +16,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
+});
+
+Route::get('/send-event', function (Request $request) {
+    $text = $request->text;
+
+    if ($text) {
+        broadcast(new HelloEvent($text));
+    }
+
+    return '?text={text}';
 });
